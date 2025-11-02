@@ -1,8 +1,7 @@
-import { error, log } from "console";
 import cron from "cron";
 import https from "https";
 
-const job = new cron.CronJob("*/* 14 * * * *", function () {
+const job = new cron.CronJob("0 */14 * * * *", function () {
   console.log("You will see this message every 14 minutes");
   https
     .get(process.env.API_URL, (res) => {
