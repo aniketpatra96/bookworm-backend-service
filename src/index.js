@@ -15,6 +15,10 @@ app.use(cors())
 app.use('/api/auth',authRouter)
 app.use('/api/books', bookRouter)
 
+app.get('/', async (req,res) => {
+    res.send('BOOKWORM SERVER IS RUNNING!!')
+})
+
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}!`)
     connectDB()
