@@ -1,16 +1,28 @@
-import cron from "cron";
+import { CronJob } from "cron";
 import https from "https";
 
-const job = new cron.CronJob("0 */14 * * * *", function () {
-  console.log("You will see this message every 14 minutes");
+const job = new CronJob("0 */14 * * * *", () => {
+  console.log("⏱️ Pinging server to prevent idling...");
+
+  const apiUrl = process.env.API_URL;
+
+  if (!apiUrl) {
+    console.error("❌ API_URL is not defined in environment variables.");
+    return;
+  }
+
   https
-    .get(process.env.API_URL, (res) => {
-      if (res.statusCode === 200)
-        console.log("Pinged successfully to prevent idling.");
-      else console.log("Failed to ping the server.", res.statusCode);
+    .get(apiUrl, (res) => {
+      if (res.statusCode === 200) {
+        console.log("✅ Pinged successfully to prevent idling.");
+      } else {
+        console.log(
+          `⚠️ Failed to ping server. Status Code: ${res.statusCode}`
+        );
+      }
     })
-    .on("error", (e) => {
-      console.error("Error while pinging the server: ", e);
+    .on("error", (err) => {
+      console.error("🚨 Error while pinging the server:", err.message);
     });
 });
 
