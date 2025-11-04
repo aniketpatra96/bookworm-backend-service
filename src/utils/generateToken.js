@@ -8,6 +8,7 @@ function generateToken(user) {
         email: user.email,
         username: user.username,
         profileImage: user.profileImage,
+        createdAt: user.createdAt,
       },
     },
     process.env.JWT_SECRET,
